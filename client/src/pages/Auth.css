@@ -94,6 +94,16 @@
   text-align: center;
 }
 
+.auth-success {
+  background: rgba(0, 255, 102, 0.1);
+  color: var(--success);
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 255, 102, 0.2);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 .auth-form {
   display: flex;
   flex-direction: column;

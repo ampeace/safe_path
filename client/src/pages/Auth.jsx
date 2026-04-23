@@ -6,10 +6,12 @@ const Auth = ({ onLoginSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const toggleMode = () => {
     setIsLogin(!isLogin);
     setError('');
+    setSuccess('');
   };
 
   const handleChange = (e) => {
@@ -19,6 +21,7 @@ const Auth = ({ onLoginSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
     
     try {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
@@ -31,9 +34,15 @@ const Auth = ({ onLoginSuccess }) => {
       const data = await response.json();
       
       if (response.ok) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify({ name: data.name, email: data.email }));
-        onLoginSuccess();
+        if (!isLogin) {
+          setIsLogin(true);
+          setSuccess('Account created successfully! Please log in.');
+          setFormData({ ...formData, password: '' });
+        } else {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify({ name: data.name, email: data.email }));
+          onLoginSuccess();
+        }
       } else {
         setError(data.message || 'Authentication failed');
       }
@@ -70,6 +79,7 @@ const Auth = ({ onLoginSuccess }) => {
 
         <form className="auth-form" onSubmit={handleSubmit}>
           {error && <div className="auth-error">{error}</div>}
+          {success && <div className="auth-success">{success}</div>}
           
           {!isLogin && (
             <div className="input-group">
