@@ -5,13 +5,14 @@ require("dotenv").config();
 
 const app = express();
 const reportRoutes = require("./routes/reportRoutes");
-
-app.use("/api", reportRoutes);
+const authRoutes = require("./routes/authRoutes");
 
 // middleware
 app.use(cors());
 app.use(express.json());
+
 app.use("/api", reportRoutes);
+app.use("/api/auth", authRoutes);
 
 // test route
 app.get("/", (req, res) => {
