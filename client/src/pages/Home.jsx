@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Search, MapPin, AlertTriangle, Navigation2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { Search, MapPin, AlertTriangle, Navigation2, Sun, Moon } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import './Home.css';
 
@@ -17,12 +17,41 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const Home = ({ onLogout }) => {
+// Component to dynamically update map center
+const MapUpdater = ({ center }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (center) {
+      map.flyTo(center, 13);
+    }
+  }, [center, map]);
+  return null;
+};
+
+const Home = ({ onLogout, isDarkMode, toggleTheme }) => {
   const [startPoint, setStartPoint] = useState('');
   const [endPoint, setEndPoint] = useState('');
+  const [userLocation, setUserLocation] = useState(null);
 
   // Default center (e.g., New York, or any generic city)
   const defaultCenter = [40.7128, -74.0060];
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation([latitude, longitude]);
+          setStartPoint("My Location");
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        }
+      );
+    }
+  }, []);
+
+  const center = userLocation || defaultCenter;
 
   const handleRouteSearch = (e) => {
     e.preventDefault();
@@ -34,9 +63,14 @@ const Home = ({ onLogout }) => {
     <div className="home-container fade-in-app">
       <nav className="glass-panel navbar">
         <div className="nav-brand">Safe<span className="brand-accent">Path</span></div>
-        <button className="auth-submit-btn nav-btn" onClick={onLogout}>
-          Log Out
-        </button>
+        <div style={{ display: 'flex', gap: '1rem', marginLeft: 'auto' }}>
+          <button className="auth-submit-btn nav-btn" onClick={toggleTheme} style={{ background: 'transparent', border: '1px solid var(--text-secondary)', color: 'var(--text-primary)' }}>
+            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button className="auth-submit-btn nav-btn" onClick={onLogout} style={{ marginLeft: 0 }}>
+            Log Out
+          </button>
+        </div>
       </nav>
 
       <div className="dashboard-layout">
@@ -96,15 +130,18 @@ const Home = ({ onLogout }) => {
         </aside>
 
         <main className="map-view">
-          <MapContainer center={defaultCenter} zoom={13} scrollWheelZoom={true} className="leaflet-map">
-            {/* Custom dark map tiles (CartoDB Dark Matter) */}
+          <MapContainer center={center} zoom={13} scrollWheelZoom={true} className="leaflet-map">
+            <MapUpdater center={userLocation} />
+            {/* Dynamic map tiles based on theme */}
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
-              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+              url={isDarkMode 
+                ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
             />
-            <Marker position={defaultCenter}>
+            <Marker position={center}>
               <Popup>
-                You are here.
+                {userLocation ? "You are here" : "Default Location"}
               </Popup>
             </Marker>
           </MapContainer>

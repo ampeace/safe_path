@@ -18,6 +18,22 @@
   --font-main: 'Outfit', sans-serif;
 }
 
+[data-theme='light'] {
+  --bg-primary: #f0f4f8;
+  --bg-secondary: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  
+  --brand-primary: #0066ff;
+  --brand-primary-glow: rgba(0, 102, 255, 0.3);
+  --brand-secondary: #0047ff;
+  
+  --danger: #e11d48;
+  --warning: #d97706;
+  --success: #059669;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
