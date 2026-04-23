@@ -130,7 +130,7 @@ const Home = ({ onLogout, isDarkMode, toggleTheme }) => {
         </aside>
 
         <main className="map-view">
-          <MapContainer center={center} zoom={13} scrollWheelZoom={true} className="leaflet-map">
+          <MapContainer center={center} zoom={13} scrollWheelZoom={false} className="leaflet-map">
             <MapUpdater center={userLocation} />
             {/* Dynamic map tiles based on theme */}
             <TileLayer
