@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import { Search, MapPin, AlertTriangle, Navigation2, Sun, Moon } from 'lucide-react';
+import { Search, MapPin, AlertTriangle, Navigation2, Sun, Moon, Phone } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import './Home.css';
 
@@ -146,6 +146,12 @@ const Home = ({ onLogout, isDarkMode, toggleTheme }) => {
             </Marker>
           </MapContainer>
         </main>
+        
+        {/* Floating SOS Button */}
+        <a href="tel:100" className="floating-sos-btn" aria-label="Call Emergency">
+          <Phone size={24} />
+          <span>SOS</span>
+        </a>
       </div>
     </div>
   );
