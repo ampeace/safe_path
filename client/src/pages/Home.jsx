@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import { Search, MapPin, AlertTriangle, Navigation2, Sun, Moon, Phone } from 'lucide-react';
+import { Search, MapPin, AlertTriangle, Navigation2, Sun, Moon, Phone, User } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import './Home.css';
 
@@ -28,7 +28,7 @@ const MapUpdater = ({ center }) => {
   return null;
 };
 
-const Home = ({ onLogout, isDarkMode, toggleTheme }) => {
+const Home = ({ onNavigateToProfile, isDarkMode, toggleTheme }) => {
   const [startPoint, setStartPoint] = useState('');
   const [endPoint, setEndPoint] = useState('');
   const [userLocation, setUserLocation] = useState(null);
@@ -67,8 +67,8 @@ const Home = ({ onLogout, isDarkMode, toggleTheme }) => {
           <button className="auth-submit-btn nav-btn" onClick={toggleTheme} style={{ background: 'transparent', border: '1px solid var(--text-secondary)', color: 'var(--text-primary)' }}>
             {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <button className="auth-submit-btn nav-btn" onClick={onLogout} style={{ marginLeft: 0 }}>
-            Log Out
+          <button className="auth-submit-btn nav-btn" onClick={onNavigateToProfile} style={{ marginLeft: 0, padding: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Profile">
+            <User size={18} />
           </button>
         </div>
       </nav>
