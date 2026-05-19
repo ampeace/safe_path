@@ -6,7 +6,7 @@ A web-based application that helps drivers find the safest route by avoiding dan
 - **Smart Route Planning**: Automatically calculates the safest path to your destination.
 - **Real-time Updates**: Monitors traffic, accidents, and weather conditions.
 - **User Authentication**: Secure sign-up and login system using JWT and bcrypt.
-- **Modern UI**: Clean, intuitive interface with a premium dark mode, glassmorphism design, and sleek animations.
+- **Modern UI**: Clean, intuitive interface with a premium dark mode, glassmorphism design, and animations.
 
 ## Technologies Used
 - **Frontend**: React.js, Vite, Vanilla CSS
